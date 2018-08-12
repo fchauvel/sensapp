@@ -10,3 +10,5 @@ services:
       -"5672:5672"
   storage:
     build: ./storage
+  storage-db:
+    image: "cassandra:3.11.3"

@@ -4,3 +4,6 @@
 [submodule "storage"]
 	path = storage
 	url = https://github.com/fchauvel/storage.git
+[submodule "tests/tester"]
+	path = tests/tester
+	url = https://github.com/fchauvel/tester.git
