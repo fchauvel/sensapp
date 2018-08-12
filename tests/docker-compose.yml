@@ -1,0 +1,29 @@
+version: '3'
+services:
+  
+  tests:
+    build: ./tester
+    command: echo "ready"
+    volumes:
+      - ./test-results:/var/results        
+    depends_on:
+      - storage
+    
+  task-queue:
+    image: "rabbitmq:3.7.7"
+    ports:
+      - "5672:5672"
+      
+  storage:
+    build: ../storage
+    command: sensapp-storage -q task-queue -p 5672 -o storage-db -r 8086
+    depends_on:
+      - task-queue
+      - storage-db
+      
+  storage-db:
+    image: "influxdb:1.6.1"
+    ports:
+      - "8086:8086"
+
+  
