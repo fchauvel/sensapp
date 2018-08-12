@@ -1,3 +1,6 @@
 [submodule "receiver"]
 	path = receiver
 	url = https://github.com/fchauvel/receiver.git
+[submodule "storage"]
+	path = storage
+	url = https://github.com/fchauvel/storage.git
