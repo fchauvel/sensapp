@@ -7,3 +7,6 @@
 [submodule "tests/tester"]
 	path = tests/tester
 	url = https://github.com/fchauvel/tester.git
+[submodule "registry"]
+	path = registry
+	url = https://github.com/fchauvel/registry
