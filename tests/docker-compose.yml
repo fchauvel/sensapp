@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   
   tests:
@@ -8,6 +9,14 @@ services:
       - ./test-results:/var/results        
     depends_on:
       - storage
+
+  receiver:
+    build: ../receiver
+    command: node app/start -q task-queue -p 5672 -n SENSAPP_QUEUE
+    depends_on:
+      - task-queue
+    ports:
+      - "3000:3000"
     
   task-queue:
     image: "rabbitmq:3.7.7"
@@ -16,14 +25,30 @@ services:
       
   storage:
     build: ../storage
-    command: sensapp-storage -q task-queue -p 5672 -o storage-db -r 8086
+    command: sensapp-storage -q task-queue -p 5672 -n SENSAPP_QUEUE -o storage-db -r 8086
     depends_on:
       - task-queue
       - storage-db
+#      - registry
       
   storage-db:
     image: "influxdb:1.6.1"
     ports:
       - "8086:8086"
+
+#  registry:
+#    build: ../registry
+#    command: ruby app/app.rb -h registry-db
+#    ports:
+#      - "4567:4567"
+#    depends_on:
+#      - registry-db
+
+#  registry-db:
+#    image: mysql:5.7
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=123456
 
   
