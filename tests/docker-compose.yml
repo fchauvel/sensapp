@@ -22,33 +22,33 @@ services:
     image: "rabbitmq:3.7.7"
     ports:
       - "5672:5672"
-      
+
   storage:
     build: ../storage
+    tty: true
     command: sensapp-storage -q task-queue -p 5672 -n SENSAPP_QUEUE -o storage-db -r 8086
     depends_on:
       - task-queue
       - storage-db
-#      - registry
-      
+      - registry
+
   storage-db:
     image: "influxdb:1.6.1"
     ports:
       - "8086:8086"
 
-#  registry:
-#    build: ../registry
-#    command: ruby app/app.rb -h registry-db
-#    ports:
-#      - "4567:4567"
-#    depends_on:
-#      - registry-db
+  registry:
+    build: ../registry
+    command: ruby app/app.rb -h registry-db
+    ports:
+      - "4567:4567"
+    depends_on:
+      - registry-db
 
-#  registry-db:
-#    image: mysql:5.7
-#    ports:
-#      - "3306:3306"
-#    environment:
-#      - MYSQL_ROOT_PASSWORD=123456
-
-  
+  registry-db:
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
