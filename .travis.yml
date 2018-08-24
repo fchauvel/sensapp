@@ -1,0 +1,26 @@
+#
+# Run the integration tests automatically
+#
+
+sudo: required
+
+language: pyhton
+
+services:
+  - docker
+
+python:
+  - 3.6
+
+
+before-script:
+  - cd sensapp/tests
+  - docker-compose build --no-cache
+  - docker-compose up --no-build -d
+  - sleep 30
+
+script:
+  - docker-compose run test sensapp-tester -s data/sensors.yml
+
+after-script:
+  - docker-compose down
