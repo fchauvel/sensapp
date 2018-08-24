@@ -20,7 +20,7 @@ before_script:
   - sleep 30
 
 script:
-  - docker-compose run test sensapp-tester -s data/sensors.yml
+  - docker-compose run tests sensapp-tester -o storage-db -s data/sensors.yml
 
 after_script:
   - docker-compose down
