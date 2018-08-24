@@ -40,6 +40,4 @@ architecture. You can run these tests using docker compose as follows:
 
  - Document the REST endpoints of the registry
 
- - Add CI for the receiver
-
  - Clean up the parameters of the tester
