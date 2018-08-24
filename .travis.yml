@@ -14,7 +14,7 @@ python:
 
 
 before_script:
-  - cd sensapp/tests
+  - cd tests
   - docker-compose build --no-cache
   - docker-compose up --no-build -d
   - sleep 30
