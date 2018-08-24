@@ -13,7 +13,7 @@ python:
   - 3.6
 
 
-before-script:
+before_script:
   - cd sensapp/tests
   - docker-compose build --no-cache
   - docker-compose up --no-build -d
@@ -22,5 +22,5 @@ before-script:
 script:
   - docker-compose run test sensapp-tester -s data/sensors.yml
 
-after-script:
+after_script:
   - docker-compose down
