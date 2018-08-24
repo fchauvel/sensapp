@@ -44,7 +44,7 @@ services:
     expose:
       - "4567"
     depends_on:
-      - registry-db
+      - registry-db 
 
   registry-db:
     image: mysql:5.7
