@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fchauvel/sensapp.svg?branch=master)](https://travis-ci.org/fchauvel/sensapp)
+
 # SensApp
 
 A rewriting of the SensApp system, as a microservice architecture.
