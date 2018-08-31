@@ -16,7 +16,9 @@ Refer to the documentation of each services for their installation and
 configuration.
 
 
-# Running Integration Tests
+# Running Tests
+
+## Integration tests
 
 The `test/tester` module runs integration tests against the SensApp
 architecture. You can run these tests using docker compose as follows:
@@ -27,6 +29,18 @@ architecture. You can run these tests using docker compose as follows:
 	$ docker-compose up --no-build -d
 	$ docker-compose run tests sensapp-tester -o storage-db -s data/sensors.yml
 
+## Performance tests
+
+The `tests/performance/`directory contains a module that generate
+loads to the sensapp endpoints, to check how well they can withstand
+the load. To run this performance test proceed as follows:
+	
+	$ cd tests
+	$ docker-compose -f performance.yml rm -f
+	$ docker-compose -f performance.yml build --no-cache
+	$ docker-compose -f performance.yml up -d
+	$ docker-compose -f performance-yml run perf artillery run tests.yml
+	
 	
 # TODOs
 
