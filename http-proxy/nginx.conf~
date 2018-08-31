@@ -1,0 +1,41 @@
+#
+# SensApp
+#
+# Copyright (C) 2018 SINTEF Digital
+# All rights reserved.
+#
+# This software may be modified and distributed under the terms
+# of the MIT license.  See the LICENSE file for details.
+#
+
+#/etc/nginx/nginx.conf
+
+events {}                   # events context needs to be defined to consider config valid
+
+http {
+
+ server {
+    listen 0.0.0.0:80;
+    server_name sensapp.org
+
+
+    proxy_set_header HOST $host;		
+    proxy_set_header X-Forwarded-Proto $scheme;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+    location /sensors/ {
+    	     proxy_pass http://registry.api.sensapp.org/
+    }
+
+    location /sensors/* {
+    	     proxy_pass http://registry.api.sensapp.org
+    }
+
+    location /sensors/*/data {
+    	     proxy_pass http://receiver.api.sensapp.org
+    }   
+
+  }
+
+}
