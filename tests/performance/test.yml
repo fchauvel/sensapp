@@ -1,0 +1,44 @@
+#
+# SensApp
+#
+# Copyright (C) 2018 SINTEF Digital
+# All rights reserved.
+#
+# This software may be modified and distributed under the terms
+# of the MIT license.  See the LICENSE file for details.
+#
+
+config:
+  target: 'http://api.sensapp.org'
+  phases:
+    - duration: 10
+      arrivalRate: 5
+
+scenarios:
+  - flow: 
+    - post:
+        url: "/sensors/"
+        json: {
+          "name": "Test Sensor",
+          "description": "Used for performance tests",
+          "unit": "cm"
+        }
+        capture:
+          json: "$.id"
+          as: "id"
+    - loop:
+      - post:
+          url: "/sensors/{{id}}/data"
+          json: [{
+          "measurement": "sensor_{{id}}",
+          "tags": {
+            "source": "performance tests",
+          },
+          "time": "2009-11-10T23:00:00Z",
+          "fields": {
+            "value": 0.64,
+          }
+        }] 
+      count: 200        
+
+

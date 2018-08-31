@@ -1,28 +1,57 @@
+#
+# SensApp
+#
+# Copyright (C) 2018 SINTEF Digital
+# All rights reserved.
+#
+# This software may be modified and distributed under the terms
+# of the MIT license.  See the LICENSE file for details.
+#
+
 version: '3'
 
 services:
   
-  tests:
-    build: ./tester
+  perf:
+    build: ./performance
     command: echo "ready"
-    volumes:
-      - ./test-results:/var/results        
     depends_on:
-      - receiver
-      - registry
+      - http-proxy
+    networks:
+      - sensapp
 
+  http-proxy:
+    image: nginx:1.15.3
+    tty: true
+    command: nginx -g 'daemon off;'
+    ports:
+      - "1234:80"
+    volumes:
+      - "../http-proxy/nginx.conf:/etc/nginx/nginx.conf:ro"
+    networks:
+      sensapp:
+        aliases:
+          - api.sensapp.org
+    depends_on:
+      - registry
+      - receiver
+      
   receiver:
     build: ../receiver
     command: node app/start -q task-queue -p 5672 -n SENSAPP_QUEUE
-    expose:
-      - "3000"
     depends_on:
       - task-queue
+    expose:
+      - "3000"
+    networks:
+      - sensapp
     
   task-queue:
     image: "rabbitmq:3.7.7"
     expose:
       - "5672"
+    networks:
+      - sensapp
 
   storage:
     build: ../storage
@@ -32,6 +61,8 @@ services:
       - task-queue
       - storage-db
       - registry
+    networks:
+      - sensapp
 
   storage-db:
     image: "influxdb:1.6.1"
@@ -45,7 +76,10 @@ services:
       - "4567"
     depends_on:
       - registry-db 
+    networks:
+      - sensapp
 
+      
   registry-db:
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
@@ -53,3 +87,10 @@ services:
       - "3306"
     environment:
       MYSQL_ROOT_PASSWORD: 123456
+    networks:
+      - sensapp
+
+
+networks:
+  sensapp:
+    driver: bridge

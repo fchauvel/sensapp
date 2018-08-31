@@ -10,7 +10,7 @@ A rewriting of the SensApp system, as a microservice architecture.
 SensApp includes four independent services, which appears in this
 repository as submodules. To fetch the all source code, do as follows:
 
-    $> git clone --recursive-submodules https://github.com/fchauvel/sensapp.git 
+    $ git clone --recursive https://github.com/fchauvel/sensapp.git 
 	
 Refer to the documentation of each services for their installation and
 configuration.
@@ -35,9 +35,5 @@ architecture. You can run these tests using docker compose as follows:
  - Add configuration file in the registry
 
  - Add retry mechanism in the receiver, so it does not fail when the queue is not yet ready!
-
- - Document the REST endpoints of the receiver
-
- - Document the REST endpoints of the registry
 
  - Clean up the parameters of the tester
