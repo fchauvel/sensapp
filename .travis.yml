@@ -4,19 +4,12 @@
 
 sudo: required
 
-language: pyhton
-
 services:
   - docker
 
-python:
-  - 3.6
-
-
 before_script:
   - cd tests
-  - docker-compose build --no-cache
-  - docker-compose up --no-build -d
+  - docker-compose -f smoke-test.yml up -d
   - sleep 30
 
 script:
